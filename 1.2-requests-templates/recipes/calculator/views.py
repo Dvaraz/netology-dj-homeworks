@@ -19,6 +19,22 @@ DATA = {
     # можете добавить свои рецепты ;)
 }
 
+
+def recipe_view(request, recipe):
+    """
+    Попробовал написать одну view для всех рецептов используя параметр url.
+    try exept использовал, что бы не было ошибки  если в параметрах url был введен рецепт которого нет в
+    DATA.
+    """
+    servings = int(request.GET.get('servings', 1))
+    try:
+        context = {
+            'recipe': {i: DATA[recipe][i] * servings for i in DATA.get(recipe)}
+        }
+    except TypeError as err:
+        context = {}
+    return render(request, 'calculator/index.html', context)
+
 # Напишите ваш обработчик. Используйте DATA как источник данных
 # Результат - render(request, 'calculator/index.html', context)
 # В качестве контекста должен быть передан словарь с рецептом:
