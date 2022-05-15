@@ -73,10 +73,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'website.wsgi.application'
 
 
+DB_NAME = 'netology_m2m_relations'
+DB_USER = 'django'
+DB_PASSWORD = 'password'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'netology_m2m_relations',
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
