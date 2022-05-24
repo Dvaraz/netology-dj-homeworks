@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from django.db.models import Count, Q
 
 from advertisements.models import Advertisement
 
@@ -23,7 +24,7 @@ class AdvertisementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Advertisement
         fields = ('id', 'title', 'description', 'creator',
-                  'status', 'created_at', )
+                  'status', 'created_at', 'favourites')
 
     def create(self, validated_data):
         """Метод для создания"""
@@ -39,7 +40,7 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         """Метод для валидации. Вызывается при создании и обновлении."""
-
-        # TODO: добавьте требуемую валидацию
-
+        open_advertisements = Advertisement.objects.filter(creator=self.context["request"].user).filter(status='OPEN')
+        if len(open_advertisements) == 10 and data['status'] == 'OPEN':
+            raise serializers.ValidationError('Can be only 10 open advertisements')
         return data
